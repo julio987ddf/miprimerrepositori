@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista de Destinos</title>
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome para los íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body class="bg-light">
+    <!-- Modal Habeas Data -->
+    <div class="modal fade" id="modalHabeasData" tabindex="-1" aria-labelledby="habeasDataLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aviso de Protección de Datos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Esta plataforma protege y maneja tus datos personales de acuerdo con la Ley de Protección de Datos Personales (Habeas Data). Al continuar navegando, aceptas nuestra política de privacidad.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-primary py-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="#" class="text-white text-decoration-none fs-4">Tiquetes Buses</a>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item"><a href="index.html" class="nav-link text-white">Inicio</a></li>
+                    <li class="nav-item"><a href="destinos.html" class="nav-link text-white">Destinos</a></li>
+                    <li class="nav-item"><a href="reservar.html" class="nav-link text-white">Reservar</a></li>
+                    <li class="nav-item"><a href="contacto.html" class="nav-link text-white">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Ventana Emergente -->
+    <div class="modal fade" id="avisoModal" tabindex="-1" aria-labelledby="avisoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title" id="avisoModalLabel"><i class="fa-solid fa-shield-alt"></i> Aviso de Protección de Datos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Esta página protege su información de acuerdo con la Ley de Habeas Data. Sus datos personales serán tratados con la mayor seguridad y confidencialidad.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">
+            <i class="fa-solid fa-bus"></i> Lista de Destinos
+        </h2>
+
+        <div class="card shadow p-4">
+            <table class="table table-bordered table-hover text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th><i class="fa-solid fa-location-dot"></i> Origen</th>
+                        <th><i class="fa-solid fa-map-marker-alt"></i> Destino</th>
+                        <th><i class="fa-solid fa-dollar-sign"></i> Precio del Tiquete</th>
+                        <th><i class="fa-solid fa-ticket"></i> Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Medellín</td>
+                        <td>Bogotá</td>
+                        <td><i class="fa-solid fa-dollar-sign"></i> 120,000</td>
+                        <td><a href="reservar.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-ticket"></i> Reservar</a></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Medellín</td>
+                        <td>Cali</td>
+                        <td><i class="fa-solid fa-dollar-sign"></i> 100,000</td>
+                        <td><a href="reservar.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-ticket"></i> Reservar</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script para abrir la ventana emergente automáticamente -->
+    <script>
+        window.onload = function() {
+            var avisoModal = new bootstrap.Modal(document.getElementById('avisoModal'));
+            avisoModal.show();
+        };
+    </script>
+<!-- Footer -->
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+        <p>&copy; 2025 Tiquetes Buses. Todos los derechos reservados.</p>
+    </div>
+</footer>
+</body>
+</html>

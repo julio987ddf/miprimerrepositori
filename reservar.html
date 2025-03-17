@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de Tiquete</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.0/JsBarcode.all.min.js"></script>
+    <style>
+        .ticket {
+            width: 350px;
+            padding: 20px;
+            border: 2px dashed black;
+            text-align: center;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif, sans-serif;
+            background: rgb(255, 255, 255);
+        }
+        .ticket h3 {
+            margin-bottom: 10px;
+        }
+        .ticket p {
+            margin: 5px 0;
+        }
+        .ticket img {
+            width: 80px;
+            margin-bottom: 10px;
+        }
+        .barcode {
+            margin: 10px 0;
+        }
+        .terms {
+            font-size: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Modal Habeas Data -->
+    <div class="modal fade" id="modalHabeasData" tabindex="-1" aria-labelledby="habeasDataLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aviso de Protección de Datos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Esta plataforma protege y maneja tus datos personales de acuerdo con la Ley de Protección de Datos Personales (Habeas Data). Al continuar navegando, aceptas nuestra política de privacidad.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-primary py-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="#" class="text-white text-decoration-none fs-4">Tiquetes Buses</a>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item"><a href="index.html" class="nav-link text-white">Inicio</a></li>
+                    <li class="nav-item"><a href="destinos.html" class="nav-link text-white">Destinos</a></li>
+                    <li class="nav-item"><a href="reservar.html" class="nav-link text-white">Reservar</a></li>
+                    <li class="nav-item"><a href="contacto.html" class="nav-link text-white">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <h2 class="text-center mb-4">Reserva de Tiquete de Bus</h2>
+    <form id="reservaForm" class="card p-4 shadow">
+        <style>
+            body {
+                background-color: #1818688c;
+                color: rgb(5, 0, 0);
+            }
+            .form-container {
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 10px;
+                width: 50%;
+                margin: auto;
+            }
+            .form-control {
+                width: 80%;
+            }
+            .btn {
+                width: 45%;
+            }
+            
+            .form-label {
+                color: rgb(0, 0, 0);
+                
+            }
+             /* Marca de agua */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px;
+            color: rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            text-transform: uppercase;
+            white-space: nowrap;
+            z-index: 0;
+        }
+        /* Contenedor del formulario */
+        .form-container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .form-label {
+            color: black;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+        }
+
+        .btn {
+            width: 48%;
+        }
+        /* Puestos de Bus*/
+    
+        .bus {
+            display: grid;
+            grid-template-columns: repeat(5, 60px);
+            gap: 10px;
+            max-width: 350px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .seat {
+            width: 60px;
+            height: 60px;
+            background-color: green;
+            text-align: center;
+            line-height: 60px;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+            position: relative;
+            font-weight: bold;
+        }
+        .selected {
+            background-color: red;
+            cursor: pointer;
+        }
+        .seat span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+    </style>
+        
+        </style>
+        
+        
+        <div class="form-container">
+            <div class="mb-3">
+                <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre:</label>
+                <input type="text" class="form-control" id="nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="documento" class="form-label"><i class="fas fa-id-card"></i> Número de Documento:</label>
+                <input type="text" class="form-control" id="documento" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefono" class="form-label"><i class="fas fa-phone"></i> Teléfono:</label>
+                <input type="text" class="form-control" id="telefono" required>
+            </div>
+            <div class="mb-3">
+                <label for="origen" class="form-label"><i class="fas fa-map-marker-alt"></i> Origen:</label>
+                <input type="text" class="form-control" id="origen" required>
+            </div>
+            <div class="mb-3">
+                <label for="destino" class="form-label"><i class="fas fa-map-marker-alt"></i> Destino:</label>
+                <input type="text" class="form-control" id="destino" required>
+            </div>
+           
+            <div class="mb-3">
+                <label for="fecha" class="form-label"><i class="fas fa-calendar-alt"></i> Fecha de Viaje:</label>
+                <input type="date" class="form-control" id="fecha" required>
+            </div>
+            <div class="mb-3">
+                <label for="hora" class="form-label"><i class="fas fa-clock"></i> Hora de Salida:</label>
+                <input type="time" class="form-control" id="hora" required>
+            </div>
+            <div class="mb-3">
+                <label for="asiento" class="form-label"><i class="fas fa-chair"></i> Número de Asiento:</label>
+                <input type="text" class="form-control" id="asiento" required>
+            </div>
+            <div class="mb-3">
+                <label for="valor" class="form-label"><i class="fas fa-dollar-sign"></i> Valor del Tiquete:</label>
+                <select class="form-control" id="valor" required>
+                    <option value="100000">$100,000</option>
+                    <option value="110000">$110,000</option>
+                    <option value="120000">$120,000</option>
+                    <option value="130000">$130,000</option>
+                    <option value="140000">$140,000</option>
+                    <option value="150000">$150,000</option>
+                </select>
+            </div>
+            <div class="d-flex justify-content-between">
+                <button type="button-center" class="btn btn-primary" onclick="imprimirTiquete()">
+                    <i class="fas fa-print"></i> Imprimir Tiquete
+                </button>
+               
+            </div>
+        </div>
+        
+        <!-- Asegúrate de incluir FontAwesome en tu proyecto -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </form>
+
+    <div id="ticket" class="ticket mt-4 mx-auto d-none">
+        <div class="watermark">ÚNICO NO TRANSFERIBLE</div>
+        <img src="imagnes/LOGO.PNG.png" alt="Logo Empresa">
+        <h3>Tiquete de Bus</h3>
+        <p id="t-nombre"></p>
+        <p id="t-documento"></p>
+        <p id="t-telefono"></p>
+        <p id="t-origen"></p>
+        <p id="t-destino"></p>
+        <p id="t-fecha"></p>
+        <p id="t-hora"></p>
+        <p id="t-asiento"></p>
+        <p id="t-valor"></p>
+        <svg id="barcode"></svg>        
+        <p class="terms">Este tiquete es personal e intransferible. Consulte nuestras políticas de privacidad y términos de uso.</p>
+    </div>
+    <h2 style="text-align: center;">Seleccione su asiento</h2>
+    <div class="bus" id="bus"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const bus = document.getElementById("bus");
+            const totalSeats = 40;
+            const bookedSeats = JSON.parse(localStorage.getItem("bookedSeats")) || {};
+            const PASSWORD = "36987";
+
+            let seatNumbers = [];
+            for (let row = 0; row < 10; row++) {
+                for (let col = 0; col < 4; col++) {
+                    seatNumbers.push(row * 4 + col + 1);
+                }
+            }
+
+            seatNumbers.forEach(i => {
+                const seat = document.createElement("div");
+                seat.classList.add("seat");
+                seat.innerHTML = `<span>${i}</span>`;
+
+                if (bookedSeats[i]) {
+                    seat.classList.add("selected");
+                    seat.innerHTML = `<span>${bookedSeats[i].name}</span>`;
+                }
+                
+                seat.addEventListener("click", function () {
+                    if (!seat.classList.contains("selected")) {
+                        const name = prompt("Ingrese su nombre para reservar el asiento:");
+                        const ticketCode = prompt("Ingrese el código de su tiquete:");
+                        if (name && ticketCode) {
+                            seat.classList.add("selected");
+                            seat.innerHTML = `<span>${i}</span>`;
+                            bookedSeats[i] = { name, ticketCode };
+                            localStorage.setItem("bookedSeats", JSON.stringify(bookedSeats));
+                            alert(`Asiento ${i} reservado a nombre de: ${name}\nCódigo de tiquete: ${ticketCode}`);
+                        }
+                    } else {
+                        alert(`Asiento ${i} está reservado a nombre de: ${bookedSeats[i].name}\nCódigo de tiquete: ${bookedSeats[i].ticketCode}`);
+                        const password = prompt("Ingrese la contraseña para liberar el asiento:");
+                        if (password === PASSWORD) {
+                            seat.classList.remove("selected");
+                            seat.innerHTML = `<span>${i}</span>`;
+                            delete bookedSeats[i];
+                            localStorage.setItem("bookedSeats", JSON.stringify(bookedSeats));
+                        } else {
+                            alert("Contraseña incorrecta");
+                        }
+                    }
+                });
+                
+                bus.appendChild(seat);
+            });
+        });
+    </script>
+    <script>
+        function generarImagen(callback) {
+            document.getElementById('t-nombre').innerText = "Nombre: " + document.getElementById('nombre').value;
+            document.getElementById('t-documento').innerText = "Documento: " + document.getElementById('documento').value;
+            document.getElementById('t-telefono').innerText = "Teléfono: " + document.getElementById('telefono').value;
+            document.getElementById('t-origen').innerText = "Origen: " + document.getElementById('origen').value;
+            document.getElementById('t-destino').innerText = "Destino: " + document.getElementById('destino').value;
+            document.getElementById('t-fecha').innerText = "Fecha: " + document.getElementById('fecha').value;
+            document.getElementById('t-hora').innerText = "Hora: " + document.getElementById('hora').value;
+            document.getElementById('t-asiento').innerText = "Asiento: " + document.getElementById('asiento').value;
+            document.getElementById('t-valor').innerText = "valor: " + document.getElementById('valor').value;
+            
+            let codigo = document.getElementById('documento').value;
+            JsBarcode("#barcode", codigo, { format: "CODE128", displayValue: false });
+            
+            document.getElementById('ticket').classList.remove('d-none');
+            
+            html2canvas(document.getElementById('ticket')).then(canvas => {
+                callback(canvas.toDataURL("image/jpeg"));
+            });
+        }
+
+        function imprimirTiquete() {
+            generarImagen(imgData => {
+                let link = document.createElement('a');
+                link.href = imgData;
+                link.download = 'tiquete.jpg';
+                link.click();
+            });
+        }
+
+        function enviarWhatsApp() {
+            generarImagen(imgData => {
+                let numero = document.getElementById('telefono').value;
+                let mensaje = "Aquí está tu tiquete de bus.";
+                let whatsappURL = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+                window.open(whatsappURL, '_blank');
+            });
+        }
+    </script>
+    <script>
+        function obtenerParametro(nombre) {
+            let params = new URLSearchParams(window.location.search);
+            return params.get(nombre);
+        }
+    
+        let asientoSeleccionado = obtenerParametro("asiento");
+        let destinoSeleccionado = obtenerParametro("destino");
+    
+        document.getElementById("asiento").textContent = asientoSeleccionado;
+        document.getElementById("destino").textContent = destinoSeleccionado;
+    </script>
+    
+    
+    
+    <!-- Script para abrir la ventana emergente automáticamente -->
+    <script>
+        window.onload = function() {
+            var avisoModal = new bootstrap.Modal(document.getElementById('avisoModal'));
+            avisoModal.show();
+        };
+    </script>
+<!-- Footer -->
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+        <p>&copy; 2025 Tiquetes Buses. Todos los derechos reservados.</p>
+    </div>
+</footer>
+</html>
