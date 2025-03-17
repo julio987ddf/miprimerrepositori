@@ -119,7 +119,7 @@
             let username = document.getElementById("username").value;
             let password = document.getElementById("password").value;
             if (username === "Admin" && password === "Admin2024@") {
-                window.location.href = "index.html";
+                window.location.href = "INICIO.html";
             } else {
                 document.getElementById("error-message").innerText = "Usuario o contraseña incorrectos";
             }
