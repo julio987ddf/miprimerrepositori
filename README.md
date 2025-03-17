@@ -2,77 +2,162 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contacto - World Tour</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { 
+            color: white; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            flex-direction: column;
+        }
+        
+        .background-img {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(8px);
+            z-index: -1;
+        }
+        
+        .loading-screen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 46, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .loading-logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+        .login-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(46, 46, 78, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            width: 700px;
+        }
+        .login-container {
+            width: 50%;
+            text-align: center;
+        }
+        .logo-container {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-container img {
+            width: 200px;
+        }
+        .input-group-text {
+            background-color: #495057;
+            border: none;
+            color: white;
+        }
+        .forgot-password {
+            margin-top: 10px;
+        }
+        .login-title {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .datetime-container {
+            margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+    
 </head>
 <body>
-
-    <header class="bg-primary text-white text-center py-4">
-        <h1>Contacto</h1>
-        <p>Estamos aquí para ayudarte en tu próxima aventura</p>
-    </header>
-
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-6">
-                <h2>Información de contacto</h2>
-                <p><strong>Dirección:</strong> Calle 123, Ciudad, País</p>
-                <p><strong>Teléfono:</strong> +123 456 789</p>
-                <p><strong>Email:</strong> contacto@worldtour.com</p>
-            </div>
-
-            <div class="col-md-6">
-                <h2>Envíanos un mensaje</h2>
-                <form id="contact-form">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="message" class="form-label">Mensaje</label>
-                        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Enviar</button>
-                </form>
-                <p id="response-message" class="mt-3"></p>
-            </div>
+    <img src="imagnes/beach-562145_1280.jpg" alt="Background" class="background-img">
+    
+    <div id="loading" class="loading-screen">
+        <img src="imagnes/Yellow_Modern_Tourism_Travel_Agency_Logo__2_-removebg-preview.png" alt="Logo" class="loading-logo">
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Cargando...</span>
         </div>
     </div>
-
-    <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; 2025 World Tour - Todos los derechos reservados.</p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
-        (function() {
-            emailjs.init("F_HGxjxxjIcpVQhXP"); // Tu User ID de EmailJS
-        })();
-
-        document.getElementById('contact-form').addEventListener('submit', function(event) {
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById("loading").style.display = "none";
+                document.getElementById("login").style.display = "flex";
+            }, 1500);
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        };
+        
+        function validateLogin(event) {
             event.preventDefault();
-
-            emailjs.send("service_t5hlinb", "template_qb1cga8", {
-                to_email: "jhoselagarez@gmail.com",
-                from_name: document.getElementById("name").value,
-                from_email: document.getElementById("email").value,
-                message: document.getElementById("message").value
-            }).then(function(response) {
-                console.log("Éxito:", response);
-                document.getElementById("response-message").innerHTML = "<span class='text-success'>Mensaje enviado con éxito.</span>";
-                document.getElementById("contact-form").reset();
-            }, function(error) {
-                console.error("Error:", error);
-                document.getElementById("response-message").innerHTML = "<span class='text-danger'>Error al enviar mensaje. Revisa la consola.</span>";
-            });
-        });
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            if (username === "Admin" && password === "Admin2024@") {
+                window.location.href = "index.html";
+            } else {
+                document.getElementById("error-message").innerText = "Usuario o contraseña incorrectos";
+            }
+        }
+        
+        function updateDateTime() {
+            let now = new Date();
+            let formattedDate = now.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            let formattedTime = now.toLocaleTimeString('es-ES');
+            document.getElementById("datetime").innerHTML = formattedDate + " - " + formattedTime;
+        }
     </script>
-
+    
+    <div id="login" style="display: none; flex-direction: column; align-items: center;">
+        <h1 class="login-title">Sistema de Generación Automático de Tiquetes</h1>
+        <div class="login-wrapper">
+            <div class="logo-container">
+                <img src="imagnes/Yellow_Modern_Tourism_Travel_Agency_Logo__2_-removebg-preview.png" alt="Logo">
+            </div>
+            <div class="login-container">
+                <form onsubmit="validateLogin(event)">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                        <input type="text" id="username" class="form-control" name="username" placeholder="Usuario" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                        <input type="password" id="password" class="form-control" name="password" placeholder="Contraseña" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+                    <div id="error-message" class="error-message"></div>
+                    <div class="forgot-password text-center">
+                        <a href="#" class="text-light">¿Olvidaste tu contraseña?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="datetime-container" id="datetime"></div>
+    </div>
 </body>
 </html>
